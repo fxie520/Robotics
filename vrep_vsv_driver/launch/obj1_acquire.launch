@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<launch>
+    <include file="$(find vrep_vsv_driver)/launch/vsv_geom.launch"/>
+
+    <node pkg="shore_follower" type="interface_observe" name="interface_observe" output="screen">
+      launch-prefix="xterm -e gdb --args">
+      <param name="world_frame" value="/world" />
+      <param name="base_frame" value="/VSV/Kision_sensor" />
+      <param name="out_dir" value="/home/GTL/fxie/catkin_ws/src/vrep_vsv_driver/data/obj1/Train" />
+      <param name="twist_threshold" value="0" />
+      <param name="min_displacement" value="0.1" />
+      <param name="min_rotation" value="0.1" />
+      <param name="max_image_per_type" value="1000" />
+      <param name="joystick_button" value="3" />
+
+      <remap from="/interface_observe/joy" to="/joy"/>
+      <remap from="/interface_observe/image" to="/vrep/kisionSensor"/>
+      <remap from="/interface_observe/twist" to="/arm_ik/twist"/>
+  </node>
+</launch>

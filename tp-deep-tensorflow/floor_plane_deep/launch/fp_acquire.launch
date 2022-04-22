@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<launch>
+    <include file="$(find vrep_ros_teleop)/launch/teleop_mux.launch"/>
+    <include file="$(find vrep4_helpers)/launch/kinect_pc.launch"/>
+
+    <node pkg="floor_plane_deep" type="floor_plane_extract" name="floor_plane_extract" output="screen">
+      launch-prefix="xterm -e gdb --args">
+      <param name="world_frame" value="world" />
+      <param name="base_frame" value="bubbleRob" />
+      <param name="max_range" value="3.4" />
+      <param name="thumb_size" value="32" />
+      <param name="out_dir" value="/home/feilian/catkin_ws/src/tp-deep-tensorflow/floor_plane_deep/data_val" />
+      <param name="height_threshold" value="0.05" />
+      <param name="min_displacement" value="0.1" />
+      <param name="min_rotation" value="0.1" />
+      <param name="max_image_per_type" value="1000" />
+      <param name="joystick_button" value="3" />
+
+      <remap from="/floor_plane_extract/pointcloud" to="/depth_registered/points"/>
+      <remap from="/floor_plane_extract/image" to="/vrep/visionSensor"/>
+      <remap from="/floor_plane_extract/info" to="/vrep/visionSensorInfo"/>
+      <remap from="/floor_plane_extract/joy" to="/joy"/>
+    </node>
+    
+    <node name="image_view" pkg="image_view" type="image_view" respawn="false" output="screen">
+        <remap from="image" to="/floor_plane_extract/image_label" />
+    </node>
+</launch>

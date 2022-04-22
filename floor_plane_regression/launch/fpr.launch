@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<launch>
+  <include file="$(find vrep_ros_teleop)/launch/teleop_mux.launch"/>
+  <include file="$(find vrep4_helpers)/launch/kinect_pc.launch"/>
+
+  <node pkg="floor_plane_regression" type="floor_plane_regression" name="floor_plane_regression" output="screen">
+      launch-prefix="xterm -e gdb --args"
+      <param name="base_frame" value="bubbleRob" />
+      <param name="max_range" value="1.3" />
+
+      <remap from="/floor_plane_regression/scans" to="/depth_registered/points"/>
+  </node>
+  
+</launch>

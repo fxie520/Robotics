@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<launch>
+    <!-- <include file="$(find vrep_ros_teleop)/launch/teleop_mux.launch"/> -->
+    <include file="$(find vrep_vsv_driver)/launch/vsv_geom.launch"/>
+
+    <node pkg="vrep_vsv_driver" type="obj3_drive.py" name="obj3_drive" output="screen">
+      <param name="model_dir" value="$(find vrep_vsv_driver)/models/obj3/models/best_model" />
+      <param name="twist_factor" value="0.7" />  <!-- Max value for twist factor -->
+      <param name="linear_vel" value="0.2" />
+
+      <remap from="/obj3_drive/image" to="/vrep/visionSensor"/>
+      <remap from="/obj3_drive/twist" to="/vsv_driver/twistCommand"/>
+    </node>
+    
+</launch>

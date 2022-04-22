@@ -1,0 +1,18 @@
+<launch>
+    <node pkg="model_prediction" type="generator.py" name="generator" output="screen" />
+
+    <node pkg="model_prediction" type="model_prediction.py" name="predictor" output="screen" >
+        <param name="trigger" value="command"/>
+        <param name="command_type" value="std_msgs/Float64"/>
+        <param name="command_field" value="data"/>
+        <param name="command_coef_csv" value="0.25,0.5,0.25"/>
+        <param name="state_type" value="std_msgs/Float64"/>
+        <param name="state_field" value="data"/>
+        <param name="state_coef_csv" value="0"/>
+
+        <remap from="/predictor/command" to="/command"/>
+        <remap from="/predictor/state" to="/state"/>
+    </node>
+
+</launch>
+

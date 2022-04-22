@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<launch>
+     <include file="$(find vrep_ros_teleop)/launch/teleop_mux.launch"/>
+
+    <node pkg="shore_follower" type="shore_follower_observe" name="shore_follower_observe" output="screen">
+      launch-prefix="xterm -e gdb --args">
+      <param name="world_frame" value="/world" />
+      <param name="base_frame" value="/bubbleRob" />
+      <param name="out_dir" value="/home/feilian/catkin_ws/src/tp-deep-tensorflow/shore_follower/data_val" />
+      <param name="rotation_threshold" value="0.2" />
+      <param name="min_displacement" value="0.1" />
+      <param name="min_rotation" value="0.1" />
+      <param name="max_image_per_type" value="400" />
+      <param name="joystick_button" value="3" />
+
+      <remap from="/shore_follower_observe/joy" to="/joy"/>
+      <remap from="/shore_follower_observe/image" to="/vrep/visionSensor"/>
+      <remap from="/shore_follower_observe/twist" to="/teleop/twistCommand"/>
+  </node>
+</launch>

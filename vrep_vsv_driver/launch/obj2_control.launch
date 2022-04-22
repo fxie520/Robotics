@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<launch>
+  <!--  <include file="$(find vrep_ros_teleop)/launch/teleop_mux.launch"/> -->
+  <!-- <include file="$(find vrep4_helpers)/launch/kinect_pc.launch"/>  -->
+
+  <node pkg="vrep_vsv_driver" type="obj2_sensor_controller" name="obj2_sensor_controller" output="screen">
+      launch-prefix="xterm -e gdb --args"
+      <param name="base_frame" value="/VSV/Kision_sensor" />
+      <param name="max_range" value="3.0" />
+
+      <remap from="/obj2_sensor_controller/scans" to="/depth_registered/points"/>
+  </node>
+  
+  <node pkg="vrep_vsv_driver" type="obj2_control.py" name="obj2_control" output="screen">
+      <param name="response_factor" value="1.0" />
+      <param name="exp_response_factor" value="15.0" />
+
+      <remap from="/obj2_control/min_z" to="/obj2_sensor_controller/min_distance"/>
+      <remap from="/obj2_control/twist" to="/arm_ik/twist"/>
+    </node>
+  
+</launch>

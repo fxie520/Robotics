@@ -1,0 +1,18 @@
+<launch>
+    <node pkg="model_prediction" type="generator.py" name="generator" output="screen" />
+
+    <node pkg="model_prediction" type="model_prediction_rate.py" name="predictor" output="screen" >
+        <param name="rate" value="10"/>
+        <param name="command_type" value="geometry_msgs/Twist"/>
+        <param name="command_field" value="linear.x"/>
+        <param name="command_coef_csv" value="7.688e-6,-6.413e-5,-0.0001028,0.0001107,-0.0003872,0.001004,0.0009116,-0.000428,-4.453e-5,3.733e-5"/>
+        <param name="state_type" value="geometry_msgs/Twist"/>
+        <param name="state_field" value="linear.x"/>
+        <param name="state_coef_csv" value="-0.006731,0.01943,-0.1112,0.4613,-1.042,1.673,-1.706,-0.06899,2.67,-2.887"/>
+
+        <remap from="/predictor/command" to="/command"/>
+        <remap from="/predictor/state" to="/state"/>
+    </node>
+
+</launch>
+

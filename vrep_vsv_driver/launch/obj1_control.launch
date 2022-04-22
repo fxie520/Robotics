@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<launch>
+  <!--  <include file="$(find vrep_ros_teleop)/launch/teleop_mux.launch"/> -->
+  <!-- <include file="$(find vrep4_helpers)/launch/kinect_pc.launch"/>  -->
+  
+  <node pkg="vrep_vsv_driver" type="obj1_control.py" name="obj1_control" output="screen">
+      <param name="response_factor" value="0.5" />
+      <param name="exp_response_factor" value="5" />
+
+      <remap from="/obj1_control/twist" to="/arm_ik/twist"/>
+      <remap from="/obj1_control/image" to="/vrep/kisionSensor"/>
+      <remap from="/obj1_control/detector" to="/vrep/metalDetector"/>
+    </node>
+  
+</launch>

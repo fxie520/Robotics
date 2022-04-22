@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<launch>
+    <include file="$(find vrep_vsv_driver)/launch/vsv_geom.launch"/>
+
+    <node pkg="shore_follower" type="interface_observe_3" name="interface_observe_3" output="screen">
+      launch-prefix="xterm -e gdb --args">
+      <param name="world_frame" value="/world" />
+      <param name="base_frame" value="/VSV/base" />
+      <param name="out_dir" value="/home/GTL/fxie/catkin_ws/src/vrep_vsv_driver/data/obj3/Val" />
+      <param name="rotation_threshold" value="0.1" />
+      <param name="min_displacement" value="0.2" />
+      <param name="min_rotation" value="0.1" />
+      <param name="max_image_per_type" value="500" />
+      <param name="joystick_button" value="3" />
+
+      <remap from="/interface_observe_3/joy" to="/joy"/>
+      <remap from="/interface_observe_3/image" to="/vrep/visionSensor"/>
+      <remap from="/interface_observe_3/twist" to="/vsv_driver/twistCommand"/>
+  </node>
+</launch>

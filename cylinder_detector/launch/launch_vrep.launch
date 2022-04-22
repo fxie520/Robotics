@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<launch>
+    <env name="ROSCONSOLE_FORMAT" value="[${severity}]: ${message}"/>
+
+    <include file="$(find vrep_ros_teleop)/launch/teleop_mux.launch"/>
+    <include file="$(find vrep4_helpers)/launch/kinect_pc.launch"/>
+    
+    <node name="task_server" pkg="floor_nav" type="task_server" output="screen" >
+        <param name="lib_path" value="$(find floor_nav)/../../devel/share/floor_nav/tasks"/>
+        <param name="base_frame" value="bubbleRob"/>
+        <param name="reference_frame" value="world"/>
+        <!--<param name="base_frame" value="body"/>
+        <param name="reference_frame" value="map"/>-->
+    </node>
+    
+    <node pkg="cylinder_detector" type="cylinder_detector" name="cylinder_detector" output="screen">
+        launch-prefix="xterm -e gdb --args"
+        <param name="base_frame" value="bubbleRob" />
+        <param name="max_range" value="3.0" />
+        <param name="n_samples" value="200" />
+        <param name="tolerance" value="0.0005" />
+        <param name="min_percent_inliers" value="0.35" />
+        <remap from="/cylinder_detector/scans" to="/depth_registered/points"/>
+  </node>
+  
+    <node name="viz_graph" pkg="floor_graph" type="viz_graph.py" output="screen"> </node>
+    <node pkg="cylinder_detector" name="mission1" type="mission1.py" output="screen"> </node>
+</launch>
+

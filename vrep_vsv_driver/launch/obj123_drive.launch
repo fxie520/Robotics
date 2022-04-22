@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<launch>
+    <!-- <include file="$(find vrep_ros_teleop)/launch/teleop_mux.launch"/> -->
+    <include file="$(find vrep_vsv_driver)/launch/vsv_geom.launch"/>
+    
+    <node pkg="vrep_vsv_driver" type="obj2_sensor_controller" name="obj2_sensor_controller" output="screen">
+      launch-prefix="xterm -e gdb --args"
+      <param name="base_frame" value="/VSV/Kision_sensor" />
+      <param name="max_range" value="3.0" />
+
+      <remap from="/obj2_sensor_controller/scans" to="/depth_registered/points"/>
+  </node>
+
+    <node pkg="vrep_vsv_driver" type="obj123_drive.py" name="obj123_drive" output="screen">
+      <param name="model_dir" value="$(find vrep_vsv_driver)/models/obj3/models/best_model" />
+      <param name="twist_factor" value="1.0" />
+      <param name="twist_factor_correction" value="2.0" />
+      <param name="linear_vel" value="0.4" />
+      <param name="response_factor_1" value="0.5" />
+      <param name="exp_response_factor_1" value="10" />
+      <param name="response_factor_2" value="1.0" />
+      <param name="exp_response_factor_2" value="15.0" />
+      <param name="target_dist" value="0.8" />
+
+      <remap from="/obj123_drive/vimage" to="/vrep/visionSensor"/>
+      <remap from="/obj123_drive/kimage" to="/vrep/kisionSensor"/>
+      <remap from="/obj123_drive/vsv_twist" to="/vsv_driver/twistCommand"/>
+      <remap from="/obj123_drive/arm_twist" to="/arm_ik/twist"/>
+      <remap from="/obj123_drive/detector" to="/vrep/metalDetector"/>
+      <remap from="/obj123_drive/min_z" to="/obj2_sensor_controller/min_distance"/>
+      <remap from="/obj123_drive/armfold" to="/VSV/ArmFold/state"/>
+    </node>
+    
+</launch>
